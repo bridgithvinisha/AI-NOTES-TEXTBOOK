@@ -1,21 +1,30 @@
-import google.generativeai as genai
 import os
+import requests
 
-# Configure Gemini API
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+HF_API_KEY = os.getenv("HF_API_KEY")
 
-model = genai.GenerativeModel("gemini-pro")
+MODEL = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+
+API_URL = f"https://api-inference.huggingface.co/models/{MODEL}"
+HEADERS = {"Authorization": f"Bearer {HF_API_KEY}"}
 
 
-def generate_notes(text, bullets):
+def generate_notes(text, bullet_count):
     prompt = f"""
-    Convert the following textbook paragraph into clear & concise {bullets} bullet-point notes.
-    Text: {text}
-    Bullet points:
+    Summarize the following content into exactly {bullet_count} clear bullet points formatted with "•":
+    Content:
+    {text}
     """
 
-    response = model.generate_content(prompt)
-    return response.text.strip()
+    payload = {"inputs": prompt}
+    response = requests.post(API_URL, headers=HEADERS, json=payload)
+
+    if response.status_code != 200:
+        raise Exception(f"HF API Error: {response.text}")
+
+    result = response.json()[0]["generated_text"]
+    return result
+
 
 
 

@@ -1,30 +1,31 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from summarizer import generate_notes
 
 app = FastAPI()
 
-# Allow frontend access
+# Allow frontend calls
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-class NotesRequest(BaseModel):
-    text: str
-    bullets: int
 
 @app.get("/")
 def home():
     return {"message": "AI Notes API is running!"}
 
-@app.post("/generate")
-def generate(request: NotesRequest):
-    notes = generate_notes(request.text, request.bullets)
-    return {"notes": notes}
+@app.get("/generate")
+def generate(text: str, bullets: int):
+    try:
+        notes = generate_notes(text, bullets)
+        return {"notes": notes}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 
 
 
