@@ -1,43 +1,49 @@
-document.getElementById("generate-btn").addEventListener("click", async () => {
-    const paragraph = document.getElementById("text-input").value.trim();
-    const bullets = parseInt(document.getElementById("bullet-count").value);
-    const resultDiv = document.getElementById("result");
+// Hosted API URL
+const apiURL = "https://ai-notes-textbook.onrender.com/generate";
 
-    if (!paragraph) {
-        resultDiv.innerHTML = "⚠ Please paste a textbook paragraph.";
+document.getElementById("generateBtn").addEventListener("click", async () => {
+    const inputText = document.getElementById("inputText").value.trim();
+    const bullets = Number(document.getElementById("bullets").value);
+    const notesOutput = document.getElementById("notesOutput");
+
+    if (!inputText) {
+        notesOutput.innerHTML = "⚠️ Please paste some text first.";
         return;
     }
 
-    resultDiv.innerHTML = "⏳ Generating notes... please wait...";
+    notesOutput.innerHTML = "⏳ Generating notes, please wait...";
 
     try {
-        const response = await fetch("https://ai-notes-textbook.onrender.com/generate-notes", {
+        const response = await fetch(apiURL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ paragraph, bullets })
+            body: JSON.stringify({
+                text: inputText,
+                bullets: bullets
+            })
         });
 
         if (!response.ok) {
-            resultDiv.innerHTML = "⚠ Error generating notes. Try again.";
+            notesOutput.innerHTML = "⚠️ Server unreachable or API error. Try again.";
             return;
         }
 
         const data = await response.json();
+        if (!data.notes) {
+            notesOutput.innerHTML = "⚠️ No notes generated. Try again.";
+            return;
+        }
 
-        // Format notes into bullet list
-        const formatted = data.notes
-            .split("\n")
-            .map(line => line.trim())
-            .filter(line => line)
-            .map(line => `• ${line}`)
-            .join("<br>");
-
-        resultDiv.innerHTML = formatted;
+        // Display notes with bullet formatting
+        notesOutput.innerHTML = data.notes
+            .replace(/\n/g, "<br>")
+            .replace(/•/g, "✔️");
 
     } catch (error) {
+        notesOutput.innerHTML = "🚨 Unable to connect to server. Please try again.";
         console.error(error);
-        resultDiv.innerHTML = "🚨 Server unreachable. Please try again.";
     }
 });
+
 
 
