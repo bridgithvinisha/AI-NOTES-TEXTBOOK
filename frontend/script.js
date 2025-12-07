@@ -1,30 +1,27 @@
-document.getElementById("generate-btn").addEventListener("click", async () => {
-    const text = document.getElementById("input-text").value;
-    const bulletCount = document.getElementById("bullet-count").value;
+document.getElementById("generateBtn").addEventListener("click", async () => {
+    const text = document.getElementById("inputText").value;
+    const numPoints = document.getElementById("numPoints").value;
+    const resultDiv = document.getElementById("outputNotes");
 
-    if (!text.trim()) {
-        alert("Please paste textbook content before generating notes.");
-        return;
-    }
+    resultDiv.innerHTML = "<b>Generating notes...</b>";
 
     try {
-        document.getElementById("output-notes").innerText = "⏳ Generating notes, please wait...";
-
-        const response = await fetch("https://ai-notes-textbook.onrender.com/generate", {
+        const response = await fetch(window.location.origin + "/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                text: text,
-                bulletCount: bulletCount
-            })
+            body: JSON.stringify({ text, num_points: numPoints })
         });
 
         const data = await response.json();
-        document.getElementById("output-notes").innerText = data.summary;
-    } catch (e) {
-        document.getElementById("output-notes").innerText =
-            "⚠️ Error generating notes. Please try again later.";
-        console.error(e);
+
+        if (data.notes) {
+            resultDiv.innerHTML = "<ul>" + data.notes.map(n => `<li>${n}</li>`).join("") + "</ul>";
+        } else {
+            resultDiv.innerHTML = "<b style='color:red'>No notes returned. Try again.</b>";
+        }
+    } catch (error) {
+        resultDiv.innerHTML = "<b style='color:red'>Error — backend not reachable.</b>";
+        console.error(error);
     }
 });
 
