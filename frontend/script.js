@@ -1,27 +1,29 @@
 document.getElementById("generateBtn").addEventListener("click", async () => {
-    const text = document.getElementById("inputText").value;
-    const numPoints = document.getElementById("numPoints").value;
-    const resultDiv = document.getElementById("outputNotes");
+    const text = document.getElementById("inputText").value.trim();
+    const bullets = document.getElementById("bulletCount").value;
 
-    resultDiv.innerHTML = "<b>Generating notes...</b>";
+    const outputDiv = document.getElementById("output");
+    outputDiv.innerHTML = "⏳ Generating notes... please wait.";
+
+    if (!text) {
+        outputDiv.innerHTML = "⚠ Please enter some text.";
+        return;
+    }
 
     try {
-        const response = await fetch(window.location.origin + "/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text, num_points: numPoints })
-        });
-
+        const response = await fetch(`/generate?text=${encodeURIComponent(text)}&bullets=${bullets}`);
         const data = await response.json();
 
-        if (data.notes) {
-            resultDiv.innerHTML = "<ul>" + data.notes.map(n => `<li>${n}</li>`).join("") + "</ul>";
+        if (data.error) {
+            outputDiv.innerHTML = `❌ Error: ${data.error}`;
         } else {
-            resultDiv.innerHTML = "<b style='color:red'>No notes returned. Try again.</b>";
+            outputDiv.innerHTML = `<ul>${data.notes
+                .map((note) => `<li>${note}</li>`)
+                .join("")}</ul>`;
         }
-    } catch (error) {
-        resultDiv.innerHTML = "<b style='color:red'>Error — backend not reachable.</b>";
-        console.error(error);
+    } catch (err) {
+        outputDiv.innerHTML = "🚨 Server unreachable. Please try again.";
+        console.error(err);
     }
 });
 

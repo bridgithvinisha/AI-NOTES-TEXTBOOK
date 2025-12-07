@@ -1,61 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Notes Generator from Textbooks</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-        }
-        textarea {
-            width: 100%;
-            font-size: 16px;
-        }
-        #generateBtn {
-            margin-top: 15px;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 18px;
-            cursor: pointer;
-            border: none;
-            font-size: 18px;
-        }
-        #generateBtn:hover {
-            background-color: #0056b3;
-        }
-        #output {
-            margin-top: 30px;
-            background: #f4f4f4;
-            padding: 20px;
-            font-size: 18px;
-            border-radius: 5px;
-            min-height: 120px;
-            white-space: pre-wrap;
-        }
-    </style>
-
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
     <h1>AI Notes Generator from Textbooks</h1>
 
-    <textarea id="inputText" rows="10" placeholder="Paste textbook paragraph here..."></textarea>
-    <br><br>
+    <textarea
+        id="inputText"
+        placeholder="Paste textbook paragraph here..."
+        rows="10"
+    ></textarea>
 
-    <label>Number of bullet points:</label>
-    <input type="number" id="numSentences" value="5" min="1" max="20">
-    <br><br>
+    <div class="input-row">
+        <label>Number of bullet points:</label>
+        <input id="bulletCount" type="number" value="5" min="1" max="15" />
+    </div>
 
     <button id="generateBtn">Generate Notes</button>
 
     <h2>Generated Notes:</h2>
-    <div id="output">Notes will appear here...</div>
+    <div id="output" class="output-box">Notes will appear here...</div>
 
-    <!-- Script MUST be placed at the end -->
     <script src="script.js"></script>
-
 </body>
 </html>
+
+
