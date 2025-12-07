@@ -1,31 +1,31 @@
-document.getElementById("generateBtn").addEventListener("click", async () => {
-    const text = document.getElementById("inputText").value;
-    const num = document.getElementById("numSentences").value;
-    const outputDiv = document.getElementById("output");
+document.getElementById("generate-btn").addEventListener("click", async () => {
+    const text = document.getElementById("input-text").value;
+    const bulletCount = document.getElementById("bullet-count").value;
 
     if (!text.trim()) {
-        outputDiv.innerHTML = "⚠ Please paste textbook content first.";
+        alert("Please paste textbook content before generating notes.");
         return;
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/generate-notes", {
+        document.getElementById("output-notes").innerText = "⏳ Generating notes, please wait...";
+
+        const response = await fetch("https://ai-notes-textbook.onrender.com/generate", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 text: text,
-                num_sentences: Number(num)
+                bulletCount: bulletCount
             })
         });
 
         const data = await response.json();
-        outputDiv.style.whiteSpace = "pre-wrap";
-        outputDiv.innerHTML = "📝 <b>Generated Notes:</b>\n\n" + data.notes;
-
-    } catch (error) {
-        outputDiv.innerHTML = "❌ Error connecting to backend server. Please make sure FastAPI is running.";
+        document.getElementById("output-notes").innerText = data.summary;
+    } catch (e) {
+        document.getElementById("output-notes").innerText =
+            "⚠️ Error generating notes. Please try again later.";
+        console.error(e);
     }
 });
+
 
