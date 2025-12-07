@@ -1,18 +1,28 @@
-import nltk
-from nltk.tokenize import sent_tokenize
+import google.generativeai as genai
+import os
 
-# Auto-download tokenizer if not available
-nltk.download("punkt", quiet=True)
+# Configure API
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-def generate_summary(text: str, num_sentences: int = 5):
-    # Convert the text into individual sentences
-    sentences = sent_tokenize(text)
+model = genai.GenerativeModel("gemini-pro")
 
-    # Pick the first N sentences
-    summary_sentences = sentences[:num_sentences]
+def generate_notes(paragraph: str, num_bullets: int = 5):
+    """Generate bullet-point notes from a given paragraph."""
+    prompt = f"""
+    Summarize the following content into {num_bullets} clear bullet points:
 
-    # Format into bullet points (each on a new line)
-    summary = "\n".join([f"• {sentence.strip()}" for sentence in summary_sentences])
+    {paragraph}
 
-    return summary
+    Format ONLY as bullet points without numbering.
+    """
+
+    response = model.generate_content(prompt)
+    text = response.text.split("\n")
+
+    # Cleanup
+    bullets = [line.replace("-", "").strip() for line in text if line.strip()]
+    bullets = bullets[:num_bullets]
+
+    return "\n".join([f"• {b}" for b in bullets])
+
 
