@@ -1,28 +1,24 @@
 import google.generativeai as genai
 import os
 
-# Configure API
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-
 model = genai.GenerativeModel("gemini-pro")
 
-def generate_notes(paragraph: str, num_bullets: int = 5):
-    """Generate bullet-point notes from a given paragraph."""
+def generate_notes(text, bullets=5):
     prompt = f"""
-    Summarize the following content into {num_bullets} clear bullet points:
+    Generate clear and concise textbook notes in bullet points.
+    Number of bullet points: {bullets}
+    Content: {text}
 
-    {paragraph}
-
-    Format ONLY as bullet points without numbering.
+    Return bullet points only, no intro or summary lines.
     """
 
-    response = model.generate_content(prompt)
-    text = response.text.split("\n")
+    try:
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        print("GENERATION ERROR:", e)
+        return None
 
-    # Cleanup
-    bullets = [line.replace("-", "").strip() for line in text if line.strip()]
-    bullets = bullets[:num_bullets]
-
-    return "\n".join([f"• {b}" for b in bullets])
 
 
