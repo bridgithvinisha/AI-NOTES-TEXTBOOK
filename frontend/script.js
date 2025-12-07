@@ -1,49 +1,31 @@
-// Hosted API URL
-const apiURL = "https://ai-notes-textbook.onrender.com/generate";
+const API_URL = "https://ai-notes-textbook.onrender.com/generate";
 
 document.getElementById("generateBtn").addEventListener("click", async () => {
-    const inputText = document.getElementById("inputText").value.trim();
-    const bullets = Number(document.getElementById("bullets").value);
-    const notesOutput = document.getElementById("notesOutput");
+    const text = document.getElementById("inputText").value.trim();
+    const bullets = document.getElementById("bulletCount").value;
+    const outputBox = document.getElementById("outputBox");
 
-    if (!inputText) {
-        notesOutput.innerHTML = "⚠️ Please paste some text first.";
+    if (!text) {
+        outputBox.innerHTML = "⚠ Please enter some text.";
         return;
     }
 
-    notesOutput.innerHTML = "⏳ Generating notes, please wait...";
+    outputBox.innerHTML = "⏳ Generating notes... Please wait...";
 
     try {
-        const response = await fetch(apiURL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                text: inputText,
-                bullets: bullets
-            })
-        });
-
-        if (!response.ok) {
-            notesOutput.innerHTML = "⚠️ Server unreachable or API error. Try again.";
-            return;
-        }
-
+        const response = await fetch(`${API_URL}?text=${encodeURIComponent(text)}&bullets=${bullets}`);
         const data = await response.json();
-        if (!data.notes) {
-            notesOutput.innerHTML = "⚠️ No notes generated. Try again.";
-            return;
+
+        if (data.notes) {
+            outputBox.innerHTML = data.notes.replaceAll("•", "<br>•");
+        } else {
+            outputBox.innerHTML = "⚠ API Error: Could not generate notes.";
         }
-
-        // Display notes with bullet formatting
-        notesOutput.innerHTML = data.notes
-            .replace(/\n/g, "<br>")
-            .replace(/•/g, "✔️");
-
-    } catch (error) {
-        notesOutput.innerHTML = "🚨 Unable to connect to server. Please try again.";
-        console.error(error);
+    } catch (err) {
+        outputBox.innerHTML = "🚨 Server unreachable. Try again later.";
     }
 });
+
 
 
 

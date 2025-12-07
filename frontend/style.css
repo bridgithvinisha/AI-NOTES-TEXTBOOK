@@ -1,119 +1,48 @@
-/* Global styling */
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f0f4ff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background: #eef3ff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
 }
 
-/* Page heading */
-h1 {
-    margin-top: 35px;
-    color: #0d47a1;
-    text-align: center;
-    font-size: 32px;
-}
-
-/* Textarea box */
 textarea {
-    width: 90%;
-    max-width: 1200px;
-    height: 220px;
-    border-radius: 10px;
-    padding: 18px;
-    font-size: 18px;
-    border: 2px solid #9bb7ff;
-    outline: none;
-    transition: 0.3s;
-    background: white;
+  width: 90%;
+  height: 300px;
+  font-size: 20px;
+  padding: 15px;
+  border-radius: 10px;
 }
 
-textarea:focus {
-    border-color: #3b6bff;
-    box-shadow: 0 0 8px rgba(59, 107, 255, 0.4);
+.controls {
+  margin-top: 15px;
 }
 
-/* Bullet count input row */
-.input-row {
-    width: 90%;
-    max-width: 1200px;
-    margin: 18px 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 20px;
+input {
+  font-size: 20px;
+  width: 80px;
 }
 
-.input-row input {
-    width: 80px;
-    padding: 10px;
-    border-radius: 6px;
-    border: 2px solid #3b6bff;
-    font-size: 18px;
-}
-
-/* Generate button */
 button {
-    background: #2962ff;
-    color: white;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 8px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: 0.25s;
-    margin-bottom: 10px;
+  margin-top: 20px;
+  padding: 12px 28px;
+  font-size: 22px;
+  background: #1a66ff;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
-button:hover {
-    background: #0d47a1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+#outputBox {
+  margin-top: 30px;
+  background: white;
+  min-height: 200px;
+  width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 22px;
+  text-align: left;
 }
 
-/* Output container */
-h2 {
-    margin-top: 32px;
-    font-size: 26px;
-    color: #0d47a1;
-}
 
-.output-box {
-    width: 90%;
-    max-width: 1200px;
-    margin-top: 12px;
-    background: white;
-    padding: 22px;
-    border-radius: 10px;
-    min-height: 120px;
-    border: 2px solid #9bb7ff;
-    font-size: 19px;
-    line-height: 1.6;
-    white-space: pre-line;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-}
-
-/* Mobile responsiveness */
-@media (max-width: 700px) {
-    textarea {
-        height: 180px;
-        font-size: 16px;
-    }
-
-    button {
-        width: 90%;
-        font-size: 18px;
-    }
-
-    .input-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .input-row label {
-        font-size: 18px;
-    }
-}
 
