@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Notes Generator from Textbooks</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <h1>AI Notes Generator from Textbooks</h1>
 
-    <textarea
-        id="inputText"
-        placeholder="Paste textbook paragraph here..."
-        rows="10"
-    ></textarea>
+    <textarea id="text-input" placeholder="Paste textbook paragraph here..."></textarea>
 
-    <div class="input-row">
-        <label>Number of bullet points:</label>
-        <input id="bulletCount" type="number" value="5" min="1" max="15" />
+    <div class="input-section">
+        <label for="bullet-count">Number of bullet points:</label>
+        <input id="bullet-count" type="number" min="1" max="20" value="5">
     </div>
 
-    <button id="generateBtn">Generate Notes</button>
+    <button id="generate-btn">Generate Notes</button>
 
     <h2>Generated Notes:</h2>
-    <div id="output" class="output-box">Notes will appear here...</div>
+    <div id="result">Notes will appear here...</div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
